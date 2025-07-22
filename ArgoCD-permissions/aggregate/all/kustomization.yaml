@@ -1,10 +1,10 @@
 resources:
   - ../../cert-manager
-  - ../../rhacs
-  - ../../gitlab
-  - ../../gitlab-runner
-  - ../../virtualization
-  - ../../developer-hub
-  - ../../aap
-  - ../../odf
-  - ../../keycloak
+#  - ../../rhacs
+#  - ../../gitlab
+#  - ../../gitlab-runner
+#  - ../../virtualization
+#  - ../../developer-hub
+#  - ../../aap
+#  - ../../odf
+#  - ../../keycloak
