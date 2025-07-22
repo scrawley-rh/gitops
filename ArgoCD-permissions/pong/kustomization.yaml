@@ -1,0 +1,3 @@
+resources:
+  - argocd-pong-role.yaml
+  - argocd-pong-rolebinding.yaml
