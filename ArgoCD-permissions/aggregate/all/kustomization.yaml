@@ -1,5 +1,5 @@
 resources:
-  - ../../cert-manager
+#  - ../../cert-manager
   - ../../pong
 #  - ../../rhacs
 #  - ../../gitlab
