@@ -1,0 +1,19 @@
+# pong-manifests/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: pong
+  labels:
+    app: pong
+spec:
+  selector:
+    app: pong # This selector must match the labels on the pods
+  ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+    - name: 8443-tcp
+      protocol: TCP
+      port: 8443
+      targetPort: 8443

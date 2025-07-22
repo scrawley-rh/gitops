@@ -1,0 +1,20 @@
+# pong-manifests/route.yaml
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: pong
+  annotations:
+    # This annotation tells cert-manager to issue a certificate for this Route
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  host: pong.apps.shift.crawleyrocks.com
+  to:
+    kind: Service
+    name: pong
+  port:
+    targetPort: 8080-tcp 
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+    externalCertificate:
+      name: pong-tls-secret

@@ -1,0 +1,26 @@
+# pong-manifests/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pong
+  labels:
+    app: pong
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pong
+  template:
+    metadata:
+      labels:
+        app: pong # This label must match the selector
+    spec:
+      containers:
+        - name: pong
+          # This image tag will be updated by our Tekton pipeline
+          image: image-registry.openshift-image-registry.svc:5000/pong/pong:latest
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 8443
+              protocol: TCP
