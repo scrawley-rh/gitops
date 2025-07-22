@@ -1,0 +1,13 @@
+# my-new-app-cert.yaml
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: my-new-app-tls # Unique name for this Certificate
+  namespace: <your-app-namespace> # The namespace where your app lives
+spec:
+  secretName: my-new-app-secret # The name of the Secret where the cert will be stored
+  issuerRef:
+    name: letsencrypt-prod # Use your existing ClusterIssuer
+    kind: ClusterIssuer
+  dnsNames:
+    - example.apps.shift.example.com # The domain for this new app
