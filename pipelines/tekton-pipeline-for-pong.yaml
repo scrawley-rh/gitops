@@ -1,0 +1,70 @@
+# tekton-pipeline-for-pong.yaml
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: pong-build-and-deploy
+spec:
+  description: |
+    This pipeline clones a git repo, builds an image with buildah,
+    and prepares for deployment by updating a manifest in another git repo.
+  params:
+    - name: app-repo-url
+      type: string
+      description: The URL of the application source code git repo.
+    - name: image-reference
+      type: string
+      description: The name of the image to build (e.g., image-registry.openshift-image-registry.svc:5000/pong/pong)
+  workspaces:
+    - name: shared-workspace
+      description: The workspace where source code is cloned and artifacts are shared.
+
+  tasks:
+    - name: clone-app-source
+      taskRef:
+        apiVersion: tekton.dev/v1beta1 # <--- Correction: Added apiVersion
+        kind: ClusterTask
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: shared-workspace
+      params:
+        - name: url
+          value: $(params.app-repo-url)
+        - name: revision
+          value: main
+
+    - name: build-image
+      taskRef:
+        apiVersion: tekton.dev/v1beta1 # <--- Correction: Added apiVersion
+        kind: ClusterTask
+        name: buildah
+      runAfter:
+        - clone-app-source
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+      params:
+        - name: IMAGE
+          value: $(params.image-reference):$(context.pipelineRun.name)
+        - name: TLSVERIFY
+          value: "false"
+
+    - name: sonarqube-scan
+      runAfter:
+        - build-image
+      params:
+        - name: image-reference
+          value: $(params.image-reference)
+      taskSpec:
+        params:
+          - name: image-reference
+            type: string
+        steps:
+          - name: sonarqube-placeholder
+            image: registry.access.redhat.com/ubi8/ubi-minimal
+            script: |
+              #!/bin/sh
+              echo "********************************************************"
+              echo "This is where the SonarQube scan would run on the code."
+              echo "Image built: $(params.image-reference):$(context.pipelineRun.name)"
+              echo "********************************************************"
