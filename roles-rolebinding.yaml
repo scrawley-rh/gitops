@@ -1,0 +1,5 @@
+oc create role secret-reader --verb=get,list,watch --resource=secrets --resource-name=<secret-name> \
+--namespace=<current-namespace>
+
+
+oc create rolebinding secret-reader-binding --role=secret-reader --serviceaccount=openshift-ingress:router --namespace=<current-namespace>
